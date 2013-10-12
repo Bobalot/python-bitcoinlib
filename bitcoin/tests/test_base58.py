@@ -32,4 +32,28 @@ class Test_base58(unittest.TestCase):
         with self.assertRaises(InvalidBase58Error):
             decode('#')
 
-    # FIXME: need to test CBitcoinAddress
+class Test_CBitcoinAddress(unittest.TestCase):
+    def test_encode_decode(self):
+        for exp_bin, exp_addr in load_test_vector('cbitcoinaddress_encode_decode.json'):
+            exp_bin = unhexlify(exp_bin.encode('utf8'))
+
+            act_addr = CBitcoinAddress(exp_bin)
+            act_bin = CBitcoinAddress.from_str(exp_addr)
+
+            self.assertEqual(str(act_addr), exp_addr)
+            self.assertEqual(bytes.__str__(act_bin), exp_bin)
+
+# WARNING: Never import the private keys contained in 
+# data/cwalletimportformat_encode_decode.json into a wallet, some wallets may use them as a change address.
+# Many people are able to see these private keys and it is likely they are being watched for deposits.
+
+class Test_CWalletImportFormat(unittest.TestCase):
+    def test_encode_decode(self):
+        for exp_bin, exp_addr in load_test_vector('cwalletimportformat_encode_decode.json'):
+            exp_bin = unhexlify(exp_bin.encode('utf8'))
+
+            act_addr = CWalletImportFormat(exp_bin)
+            act_bin = CWalletImportFormat.from_str(exp_addr)
+
+            self.assertEqual(str(act_addr), exp_addr)
+            self.assertEqual(bytes.__str__(act_bin), exp_bin)

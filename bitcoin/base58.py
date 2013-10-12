@@ -107,3 +107,16 @@ class CBitcoinAddress(CBase58Data):
     SCRIPT_ADDRESS = 5
     PUBKEY_ADDRESS_TEST = 111
     SCRIPT_ADDRESS_TEST = 196
+
+    def __new__(cls, data, nVersion=PUBKEY_ADDRESS):
+        self = super(CBase58Data, cls).__new__(cls, data)
+        self.nVersion = nVersion
+        return self
+
+class CWalletImportFormat(CBase58Data):
+    PREFIX = 0x80
+
+    def __new__(cls, data, nVersion=PREFIX):
+        self = super(CBase58Data, cls).__new__(cls, data)
+        self.nVersion = nVersion
+        return self
